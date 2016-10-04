@@ -2,19 +2,21 @@
   "name": "app-name-placeholder",
   "version": "0.0.1",
   "description": "App Description Placeholder",
-  "main": "index.js",
+  "main": "/public/index.html",
   "scripts": {
-    "test": "eslint src/app/app.js",
-    "dev": "browser-sync start --server --files 'index.html' 'src/**/*.*'"
+    "test": "eslint public/app.js",
+    "dev": "node server.js"
   },
   "author": "Elisha Terada",
   "license": "GPL-3.0",
   "homepage": "https://...",
   "devDependencies": {
-    "browser-sync": "^2.15.0",
-    "eslint": "^3.5.0",
-    "eslint-config-standard": "^6.0.0",
-    "eslint-plugin-promise": "^2.0.1",
-    "eslint-plugin-standard": "^2.0.0"
+    "browser-sync": "^2.17.0",
+    "connect-history-api-fallback": "^1.3.0",
+    "connect-logger": "^0.0.1",
+    "eslint": "^3.7.0",
+    "eslint-config-standard": "^6.2.0",
+    "eslint-plugin-promise": "^3.0.0",
+    "eslint-plugin-standard": "^2.0.1"
   }
 }

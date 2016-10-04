@@ -1,0 +1,54 @@
+<md-sidenav
+  class="md-sidenav-left"
+  md-component-id="leftNav"
+  md-whiteframe="4"
+>
+  <md-content>
+
+    <md-list>
+      <md-list-item ng-click="$ctrl.goTo('landing'); $ctrl.toggleLeftNav();">
+        <div>
+          <md-icon>home</md-icon>
+        </div>
+        <div class="md-list-item-text ml1">Home</div>
+      </md-list-item>
+    </md-list>
+
+  </md-content>
+</md-sidenav>
+
+<div layout="column" flex>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <div flex="25" layout-align="start center">
+        <md-button
+          class="md-icon-button"
+          ng-click="$ctrl.toggleLeftNav()">
+          <md-icon>menu</md-icon>
+        </md-button>
+      </div>
+      <div flex layout="row" layout-align="center center">
+        <div class="md-title link" ng-click="goTo('landing')">App Title</div>
+      </div>
+      <div flex="25" layout="row" layout-align="end center">
+        <div>
+          <md-button
+            ng-if="!$ctrl.user"
+            ng-click="$ctrl.signIn()">
+            <md-tooltip>Google Sign-In</md-tooltip>
+            Sign In
+          </md-button>
+          <md-list-item ng-if="$ctrl.user">
+            <img ng-src="{{ $ctrl.user.photoURL }}"
+                 class="md-avatar mg0">
+          </md-list-item>
+        </div>
+      </div>
+    </div>
+  </md-toolbar>
+
+  <md-content md-scroll-y layout="column" flex>
+    <div flex ui-view></div>
+  </md-content>
+
+</div>
