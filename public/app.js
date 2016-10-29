@@ -89,10 +89,10 @@ function config (
 
 function run () {
   var config = {
-    apiKey: '...',
-    authDomain: '{projectKey}.firebaseapp.com',
-    databaseURL: 'https://{projectKey}.firebaseio.com',
-    storageBucket: '{projectKey}.appspot.com'
+    apiKey: 'AIzaSyALYBJL00KKoXGx7Vdhqv3TzJVtB7sy22Y',
+    authDomain: 'hideseek-4a8f6.firebaseapp.com',
+    databaseURL: 'https://hideseek-4a8f6.firebaseio.com',
+    storageBucket: 'hideseek-4a8f6.appspot.com'
   }
 
   firebase.initializeApp(config)
