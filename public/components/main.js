@@ -1,4 +1,3 @@
-//  Main Component
 angular
   .module('app')
   .component('main', {
@@ -37,19 +36,20 @@ function MainCtrl ($mdSidenav, $timeout, $log, $state, Auth, $firebaseObject) {
 
   function firebaseAuth () {
     Auth.$onAuthStateChanged(function (firebaseUser) {
-      ctrl.user = $firebaseObject(
-        firebase.database().ref('profiles').child(firebaseUser.uid)
-      )
+      if (firebaseUser) {
+        ctrl.user = $firebaseObject(
+          firebase.database().ref('profiles/' + firebaseUser.uid)
+        )
 
-      ctrl.user.$loaded(function() {
-        // Save current user profile
-        ctrl.user.displayName = firebaseUser.displayName
-        ctrl.user.email = firebaseUser.email
-        ctrl.user.photoURL = firebaseUser.photoURL
+        ctrl.user.$loaded(function() {
+          // Save current user profile
+          ctrl.user.displayName = firebaseUser.displayName
+          ctrl.user.email = firebaseUser.email
+          ctrl.user.photoURL = firebaseUser.photoURL
 
-        ctrl.user.$save()
-      })
-
+          ctrl.user.$save()
+        })
+      }
     })
   }
 

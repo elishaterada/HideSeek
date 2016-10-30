@@ -11,6 +11,8 @@ angular
   .run(run)
   .constant('_', _)
   .constant('moment', moment)
+  .constant('mapboxgl', mapboxgl)
+  .constant('mapboxToken', 'pk.eyJ1IjoiZWxpc2hhdGVyYWRhIiwiYSI6ImNpdXZzdnJudTA0ZTkzMW4wYjQzaDVjbmQifQ.H_pdii7uRaIyOdKh8R124Q')
 
 function config (
   $animateProvider,

@@ -1,4 +1,3 @@
-// Notfound Component
 angular
   .module('app')
   .component('notFound', {
