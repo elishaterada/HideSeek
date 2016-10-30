@@ -1,5 +1,11 @@
 {
   "rules": {
+    "geolocations": {
+      ".read": true,
+      "$uid": {
+        ".write": "$uid === auth.uid"
+      }
+    },
     "profiles": {
       ".read": true,
       "$uid": {
