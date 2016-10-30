@@ -145,4 +145,17 @@ md-icon.md-custom-theme.md-48 {
   border-radius: 50%;
   opacity: 0.75;
   box-shadow: 0 0 15px #29B6F6;
+  animation: fadeinout 30s ease 1;
+}
+
+@keyframes fadeinout {
+  0% {
+    opacity: 0.75;
+  }
+  80% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0;
+  }
 }

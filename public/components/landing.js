@@ -8,7 +8,7 @@ angular
     }
   })
 
-function LandingCtrl ($log, $window, $interval, $timeout, $firebaseArray, $firebaseObject, mapboxToken, mapboxgl) {
+function LandingCtrl (Auth, $log, $window, $interval, $timeout, $firebaseArray, $firebaseObject, mapboxToken, mapboxgl) {
   var ctrl = this
   var map = null
   var intervalID
@@ -23,12 +23,23 @@ function LandingCtrl ($log, $window, $interval, $timeout, $firebaseArray, $fireb
     ctrl.geolocations = $firebaseArray(
       firebase.database().ref('geolocations')
     )
-    ctrl.geolocation = $firebaseObject(
-      firebase.database().ref('geolocations/' + ctrl.user.uid)
-    )
 
-    ctrl.geolocations.$loaded(function(){
-      $window.navigator.geolocation.watchPosition(geoSsuccess, geoError, geo_options)
+    ctrl.geolocations.$watch(function(event){
+      if (map && map.loaded() && ctrl.geolocations) {
+        loadMarkers()
+      }
+    })
+
+    Auth.$onAuthStateChanged(function (firebaseUser) {
+      if (firebaseUser) {
+        ctrl.geolocation = $firebaseObject(
+          firebase.database().ref('geolocations/' + firebaseUser.uid)
+        )
+
+        ctrl.geolocation.$loaded(function(){
+          $window.navigator.geolocation.watchPosition(geoSuccess, geoError, geo_options)
+        })
+      }
     })
 
     mapboxgl.accessToken = mapboxToken
@@ -43,12 +54,6 @@ function LandingCtrl ($log, $window, $interval, $timeout, $firebaseArray, $fireb
     intervalID = $interval(
       mapInitLoadMarkers, 250
     )
-  }
-
-  ctrl.$onChanges = function () {
-    if (map && map.loaded() && ctrl.geolocations) {
-      loadMarkers()
-    }
   }
 
   // Map functions
@@ -79,9 +84,13 @@ function LandingCtrl ($log, $window, $interval, $timeout, $firebaseArray, $fireb
       el.id = key
       el.className = 'marker'
 
-      new mapboxgl.Marker(el)
+      var marker = new mapboxgl.Marker(el)
         .setLngLat([value.longitude, value.latitude])
         .addTo(map)
+
+      $timeout(function(){
+        marker.remove()
+      }, 30000)
     })
 
     if (numGeoLocations === 1) {
@@ -94,7 +103,7 @@ function LandingCtrl ($log, $window, $interval, $timeout, $firebaseArray, $fireb
 
   // Geo location functions
   // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/Using_geolocation
-  function geoSsuccess(position) {
+  function geoSuccess(position) {
     if (!ctrl.geolocation) { return }
 
     ctrl.geolocation.displayName = ctrl.user.displayName
