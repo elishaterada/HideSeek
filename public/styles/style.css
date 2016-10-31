@@ -137,15 +137,23 @@ md-icon.md-custom-theme.md-48 {
 }
 
 .marker {
-  background-color: #039BE5;
   width: 10px;
   height: 10px;
   margin-top: -5px;
   margin-left: -5px;
   border-radius: 50%;
   opacity: 0.75;
-  box-shadow: 0 0 15px #29B6F6;
-  animation: fadeinout 30s ease 1;
+}
+
+.marker.me {
+  background-color: #039BE5; /* Light Blue 600 */
+  box-shadow: 0 0 10px #29B6F6; /* Light Blue 400 */
+}
+
+.marker.other {
+  background-color: #FFB300; /* Amber 600 */
+  box-shadow: 0 0 10px #FFCA28; /* Amber 400 */
+  animation: fadeinout 10s ease 1;
 }
 
 @keyframes fadeinout {
@@ -153,7 +161,7 @@ md-icon.md-custom-theme.md-48 {
     opacity: 0.75;
   }
   80% {
-    opacity: 0.25;
+    opacity: 0.75;
   }
   100% {
     opacity: 0;

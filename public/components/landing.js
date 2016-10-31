@@ -24,7 +24,7 @@ function LandingCtrl (Auth, $log, $window, $interval, $timeout, $firebaseArray, 
       firebase.database().ref('geolocations')
     )
 
-    ctrl.geolocations.$watch(function(event){
+    ctrl.geolocations.$watch(function(){
       if (map && map.loaded() && ctrl.geolocations) {
         loadMarkers()
       }
@@ -67,12 +67,25 @@ function LandingCtrl (Auth, $log, $window, $interval, $timeout, $firebaseArray, 
   function loadMarkers () {
     var bounds = new mapboxgl.LngLatBounds()
     var numGeoLocations = 0
+    var maxActive = 1 // minutes
+    var now = moment()
 
     if(!ctrl.geolocations) { return }
 
     _.each(ctrl.geolocations, function (value, key) {
+      var lastActive = now.diff(value.timestamp, 'minutes')
+      var previousMarker = document.getElementById(value.$id)
+
       // Check for geolocation
       if(!value) { return }
+
+      // Skip if last active is more than a minute ago
+      if(lastActive > maxActive) { return }
+
+      // Remove old marker of same user
+      if(previousMarker) {
+        previousMarker.remove()
+      }
 
       // Count how many profiles exists with geo locations
       numGeoLocations += 1
@@ -81,16 +94,23 @@ function LandingCtrl (Auth, $log, $window, $interval, $timeout, $firebaseArray, 
       bounds.extend([value.longitude, value.latitude])
 
       var el = document.createElement('div')
-      el.id = key
-      el.className = 'marker'
+      el.id = value.$id
+
+      if(value.$id === ctrl.geolocation.$id) {
+        el.className = 'marker me'
+      } else {
+        el.className = 'marker other'
+      }
 
       var marker = new mapboxgl.Marker(el)
         .setLngLat([value.longitude, value.latitude])
         .addTo(map)
 
+      // Automatically remove other user markers
       $timeout(function(){
+        if(value.$id !== ctrl.geolocation.$id)
         marker.remove()
-      }, 30000)
+      }, 10000)
     })
 
     if (numGeoLocations === 1) {
